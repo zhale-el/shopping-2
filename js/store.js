@@ -1,16 +1,28 @@
 let allProducts = [
-  { id: 1, title: "Album 1", price: 12.93, img: "Images/Album 1.png" },
-  { id: 2, title: "Album 2", price: 21, img: "Images/Album 2.png" },
-  { id: 3, title: "Album 3", price: 33, img: "Images/Album 3.png" },
-  { id: 4, title: "Album 4", price: 41.98, img: "Images/Album 4.png" },
-  { id: 5, title: "Coffee", price: 98, img: "Images/Cofee.png" },
-  { id: 6, title: "Shirt", price: 65.33, img: "Images/Shirt.png" },
+  {
+    id: 1,
+    title: "Album 1",
+    price: 12.93,
+    img: "Images/Album 1.png",
+    count: 1,
+  },
+  { id: 2, title: "Album 2", price: 21, img: "Images/Album 2.png", count: 1 },
+  { id: 3, title: "Album 3", price: 33, img: "Images/Album 3.png", count: 1 },
+  {
+    id: 4,
+    title: "Album 4",
+    price: 41.98,
+    img: "Images/Album 4.png",
+    count: 1,
+  },
+  { id: 5, title: "Coffee", price: 98, img: "Images/Cofee.png", count: 1 },
+  { id: 6, title: "Shirt", price: 65.33, img: "Images/Shirt.png", count: 1 },
 ];
 
 const shopItemsContainer = document.querySelector(".shop-items");
 const basketProductsContainer = document.querySelector(".cart-items");
 const removeAllProductsBtn = document.querySelector("#remove-all-products");
-
+const cartTotalPriceEl = document.querySelector(".cart-total-price");
 // cart user
 let userBasket = [];
 
@@ -67,6 +79,7 @@ function addProductToBasketArray(productId) {
   });
   userBasket.push(mainProduct);
   basketProductsGenerator(userBasket);
+  calcTotalPrice(userBasket);
 }
 
 function basketProductsGenerator(userBasketArray) {
@@ -111,7 +124,7 @@ function basketProductsGenerator(userBasketArray) {
     //Add Input
     let basketProductInput = document.createElement("input");
     basketProductInput.className = "cart-quantity-input";
-    basketProductInput.value = "1";
+    basketProductInput.value = product.count;
     basketProductInput.setAttribute("type", "number");
 
     //Add button
@@ -150,3 +163,14 @@ removeAllProductsBtn.addEventListener("click", function () {
   userBasket = [];
   basketProductsGenerator(userBasket);
 });
+
+// calculate price
+function calcTotalPrice(userBasketArray) {
+  let totalPriceValue = 0;
+
+  userBasketArray.forEach((product) => {
+    totalPriceValue += product.count * product.price;
+  });
+
+  cartTotalPriceEl.innerHTML = totalPriceValue;
+}
