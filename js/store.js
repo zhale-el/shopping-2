@@ -2,21 +2,21 @@ let allProducts = [
   {
     id: 1,
     title: "Album 1",
-    price: 12.93,
+    price: 5,
     img: "Images/Album 1.png",
     count: 1,
   },
-  { id: 2, title: "Album 2", price: 21, img: "Images/Album 2.png", count: 1 },
-  { id: 3, title: "Album 3", price: 33, img: "Images/Album 3.png", count: 1 },
+  { id: 2, title: "Album 2", price: 10, img: "Images/Album 2.png", count: 1 },
+  { id: 3, title: "Album 3", price: 15, img: "Images/Album 3.png", count: 1 },
   {
     id: 4,
     title: "Album 4",
-    price: 41.98,
+    price: 20,
     img: "Images/Album 4.png",
     count: 1,
   },
-  { id: 5, title: "Coffee", price: 98, img: "Images/Cofee.png", count: 1 },
-  { id: 6, title: "Shirt", price: 65.33, img: "Images/Shirt.png", count: 1 },
+  { id: 5, title: "Coffee", price: 25, img: "Images/Cofee.png", count: 1 },
+  { id: 6, title: "Shirt", price: 30, img: "Images/Shirt.png", count: 1 },
 ];
 
 const shopItemsContainer = document.querySelector(".shop-items");
@@ -126,6 +126,9 @@ function basketProductsGenerator(userBasketArray) {
     basketProductInput.className = "cart-quantity-input";
     basketProductInput.value = product.count;
     basketProductInput.setAttribute("type", "number");
+    basketProductInput.addEventListener("click", function () {
+      updateProductCount(product.id, basketProductInput.value);
+    });
 
     //Add button
     let basketProductRemoveBtn = document.createElement("button");
@@ -173,4 +176,17 @@ function calcTotalPrice(userBasketArray) {
   });
 
   cartTotalPriceEl.innerHTML = totalPriceValue;
+}
+
+//update count
+function updateProductCount(productId, newCount) {
+  console.log("product id: " + productId + " new count: " + newCount);
+
+  userBasket.forEach(function (product) {
+    if (product.id === productId) {
+      product.count = newCount;
+    }
+  });
+
+  calcTotalPrice(userBasket);
 }
