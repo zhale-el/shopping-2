@@ -8,6 +8,11 @@ let allProducts = [
 ];
 
 const shopItemsContainer = document.querySelector(".shop-items");
+const basketProductsContainer = document.querySelector(".cart-items");
+const removeAllProductsBtn = document.querySelector("#remove-all-products");
+
+// cart user
+let userBasket = [];
 
 allProducts.forEach((product) => {
   // create div shop-item
@@ -37,6 +42,9 @@ allProducts.forEach((product) => {
   let productAddButton = document.createElement("button");
   productAddButton.className = "btn btn-primary shop-item-button";
   productAddButton.innerHTML = "ADD TO CART";
+  productAddButton.addEventListener("click", () => {
+    addProductToBasketArray(product.id);
+  });
 
   //Add tag button and price to productDetail
   productDetailContainer.append(productPriceSpan, productAddButton);
@@ -50,4 +58,95 @@ allProducts.forEach((product) => {
 
   // Add all to shopItemsContainer
   shopItemsContainer.append(productContainer);
+});
+
+//function add Product
+function addProductToBasketArray(productId) {
+  let mainProduct = allProducts.find(function (product) {
+    return product.id === productId;
+  });
+  userBasket.push(mainProduct);
+  basketProductsGenerator(userBasket);
+}
+
+function basketProductsGenerator(userBasketArray) {
+  basketProductsContainer.innerHTML = "";
+
+  userBasketArray.forEach((product) => {
+    //create div cart-row (in cart)
+    let basketProductEl = document.createElement("div");
+    basketProductEl.classList.add("cart-row");
+
+    //create cart-item cart-column(details container in cart)
+    let basketProductDetailsContainer = document.createElement("div");
+    basketProductDetailsContainer.className = "cart-item cart-column";
+
+    //create details
+    let basketProductImg = document.createElement("img");
+    basketProductImg.setAttribute("src", product.img);
+    basketProductImg.setAttribute("width", "100");
+    basketProductImg.setAttribute("height", "100");
+    basketProductImg.classList.add("cart-item-image");
+
+    //create title
+    let basketProductTitleSpan = document.createElement("span");
+    basketProductTitleSpan.classList.add("cart-item-title");
+    basketProductTitleSpan.innerHTML = product.title;
+
+    // Add title and image to div cart-item
+    basketProductDetailsContainer.append(
+      basketProductImg,
+      basketProductTitleSpan
+    );
+
+    // Add price
+    let basketProductPriceSpan = document.createElement("span");
+    basketProductPriceSpan.className = "cart-price cart-column";
+    basketProductPriceSpan.innerHTML = product.price;
+
+    // Add  div Input container
+    let basketProductInputsContainer = document.createElement("div");
+    basketProductInputsContainer.className = "cart-quantity cart-column";
+
+    //Add Input
+    let basketProductInput = document.createElement("input");
+    basketProductInput.className = "cart-quantity-input";
+    basketProductInput.value = "1";
+    basketProductInput.setAttribute("type", "number");
+
+    //Add button
+    let basketProductRemoveBtn = document.createElement("button");
+    basketProductRemoveBtn.className = "btn btn-danger";
+    basketProductRemoveBtn.innerHTML = "Remove";
+    basketProductRemoveBtn.addEventListener("click", function () {
+      removeProductFromBasket(product.id);
+    });
+    // Append input
+    basketProductInputsContainer.append(
+      basketProductInput,
+      basketProductRemoveBtn
+    );
+
+    //Add to container
+    basketProductEl.append(
+      basketProductDetailsContainer,
+      basketProductPriceSpan,
+      basketProductInputsContainer
+    );
+
+    basketProductsContainer.append(basketProductEl);
+  });
+}
+
+function removeProductFromBasket(productId) {
+  userBasket = userBasket.filter((product) => {
+    return product.id !== productId;
+  });
+
+  basketProductsGenerator(userBasket);
+}
+
+removeAllProductsBtn.addEventListener("click", function () {
+  userBasket = [];
+  basketProductsGenerator(userBasket);
 });
