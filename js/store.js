@@ -27,49 +27,58 @@ const cartTotalPriceEl = document.querySelector(".cart-total-price");
 let userBasket = [];
 
 allProducts.forEach((product) => {
-  // create div shop-item
-  let productContainer = document.createElement("div");
-  productContainer.classList.add("shop-item");
+  // // create div shop-item
+  // let productContainer = document.createElement("div");
+  // productContainer.classList.add("shop-item");
 
-  //create span for title
-  let productTitleSpan = document.createElement("span");
-  productTitleSpan.classList.add("shop-item-title");
-  productTitleSpan.innerHTML = product.title;
+  // //create span for title
+  // let productTitleSpan = document.createElement("span");
+  // productTitleSpan.classList.add("shop-item-title");
+  // productTitleSpan.innerHTML = product.title;
 
-  //create div image
-  let productImageEl = document.createElement("img");
-  productImageEl.classList.add("shop-item-image");
-  productImageEl.setAttribute("src", product.img);
+  // //create div image
+  // let productImageEl = document.createElement("img");
+  // productImageEl.classList.add("shop-item-image");
+  // productImageEl.setAttribute("src", product.img);
 
-  //create div details
-  let productDetailContainer = document.createElement("div");
-  productDetailContainer.classList.add("shop-item-details");
+  // //create div details
+  // let productDetailContainer = document.createElement("div");
+  // productDetailContainer.classList.add("shop-item-details");
 
-  //create span price
-  let productPriceSpan = document.createElement("span");
-  productPriceSpan.classList.add("shop-item-price");
-  productPriceSpan.innerHTML = product.price;
+  // //create span price
+  // let productPriceSpan = document.createElement("span");
+  // productPriceSpan.classList.add("shop-item-price");
+  // productPriceSpan.innerHTML = product.price;
 
-  //create button add
-  let productAddButton = document.createElement("button");
-  productAddButton.className = "btn btn-primary shop-item-button";
-  productAddButton.innerHTML = "ADD TO CART";
-  productAddButton.addEventListener("click", () => {
-    addProductToBasketArray(product.id);
-  });
+  // //create button add
+  // let productAddButton = document.createElement("button");
+  // productAddButton.className = "btn btn-primary shop-item-button";
+  // productAddButton.innerHTML = "ADD TO CART";
+  // productAddButton.addEventListener("click", () => {
+  //   addProductToBasketArray(product.id);
+  // });
 
-  //Add tag button and price to productDetail
-  productDetailContainer.append(productPriceSpan, productAddButton);
+  // //Add tag button and price to productDetail
+  // productDetailContainer.append(productPriceSpan, productAddButton);
 
-  // Add tag title and image and detail to productContainer
-  productContainer.append(
-    productDetailContainer,
-    productImageEl,
-    productTitleSpan
+  // // Add tag title and image and detail to productContainer
+  // productContainer.append(
+  //   productDetailContainer,
+  //   productImageEl,
+  //   productTitleSpan
+  // );
+
+  // // Add all to shopItemsContainer
+  // shopItemsContainer.append(productContainer);
+
+  shopItemsContainer.insertAdjacentHTML(
+    "beforeend",
+    `
+    <div class="shop-item"><div class="shop-item-details">
+    <span class="shop-item-price">${product.price}</span>
+    <button class="btn btn-primary shop-item-button" onclick="addProductToBasketArray(${product.id});" >ADD TO CART</button></div>
+    <img class="shop-item-image" src="${product.img}"><span class="shop-item-title">${product.title}</span></div>`
   );
-
-  // Add all to shopItemsContainer
-  shopItemsContainer.append(productContainer);
 });
 
 //function add Product
@@ -180,8 +189,6 @@ function calcTotalPrice(userBasketArray) {
 
 //update count
 function updateProductCount(productId, newCount) {
-  console.log("product id: " + productId + " new count: " + newCount);
-
   userBasket.forEach(function (product) {
     if (product.id === productId) {
       product.count = newCount;
